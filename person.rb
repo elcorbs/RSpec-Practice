@@ -21,49 +21,39 @@ class Person
   end
 
 
-  def name
-    if @middle
-      @first+ @middle+ @last
-    else
-      @first + @last
-    end
+  def name(names)
+    names.join(" ")
   end
 
    def createinitials
-    @first=@first_name.to_s[0,1]
-    @middle= @middle_name.to_s[0,1]
-    @last=@last_name.to_s[0,1]
+
+    @names =[@first_name, @middle_name, @last_name]
+    @names.map! {|name| name.to_s[0,1] }
   end
 
 
   def fullname
-    @first=@first_name+" "
-    @middle= @middle_name
-    if @middle
-      @middle+=" "
+    if @middle_name
+      self.name([@first_name,@middle_name, @last_name])
+    else
+      self.name([@first_name,@last_name])
     end
-    @last=@last_name
-    self.name
   end
 
 
   def name_with_initial
-    @middle=@middle_name
-    if @middle
-      self.createinitials
-      @middle+=". "
+    if @middle_name
+      @middle = @middle_name.to_s[0,1]+"."
+      self.name([@first_name,@middle, @last_name])
+    else
+      self.name([@first_name,@last_name])
     end
-    @first=@first_name+" "
-    @last=@last_name
-    self.name
+
   end
 
   def initials
     self.createinitials
-    if @middle_name = nil
-      @middle = nil
-    end
-    self.name
+    self.name(@names).delete("\s")
   end
 
 end
